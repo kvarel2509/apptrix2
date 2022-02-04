@@ -1,14 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, first_name, gender, password=None):
-        if not email or not first_name or not gender:
-            raise ValueError('Email, first name and gender is required fields')
-        user = self.model(email=self.normalize_email(email), first_name=first_name, gender=gender)
+    def create_user(self, email, first_name, gender, password=None, **kwargs):
+        if not email or not first_name or not gender or not password:
+            raise ValueError('Email, first name, gender and password is required fields')
+        user = self.model(email=self.normalize_email(email), first_name=first_name, gender=gender, **kwargs)
         user.set_password(password)
-        user.is_superuser = False
         user.save()
         return user
 
@@ -19,7 +18,7 @@ class CustomUserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Почта', unique=True)
     first_name = models.CharField('Имя', max_length=30)
     last_name = models.CharField('Фамилия', max_length=30, blank=True, default='')
