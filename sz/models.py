@@ -26,6 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField('Пол', max_length=30, choices=[('M', 'Man'), ('W', 'Woman')], help_text='M/W')
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    match = models.ManyToManyField('self', symmetrical=False, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'gender']
