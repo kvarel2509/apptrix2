@@ -5,6 +5,7 @@ from django.core.mail import send_mass_mail
 from .serializers import ClientSerializer, ReturnClientSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django_filters import rest_framework as filters
 
 User = get_user_model()
 
@@ -21,9 +22,11 @@ class ClientsView(generics.CreateAPIView):
         return Response(ReturnClientSerializer(serializer.data).data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class TestView(generics.ListAPIView):
+class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = ReturnClientSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('gender', 'first_name', 'last_name')
 
 
 class TestView2(generics.RetrieveUpdateDestroyAPIView):
