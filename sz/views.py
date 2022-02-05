@@ -16,3 +16,13 @@ class ClientsView(generics.CreateAPIView):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(ReturnClientSerializer(serializer.data).data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class TestView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = ReturnClientSerializer
+
+
+class TestView2(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = ReturnClientSerializer
