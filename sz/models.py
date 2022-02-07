@@ -27,6 +27,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     match = models.ManyToManyField('self', symmetrical=False, blank=True)
+    latitude = models.DecimalField('Широта', max_digits=8, decimal_places=6)
+    longitude = models.DecimalField('Долгота', max_digits=9, decimal_places=6)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'gender']
