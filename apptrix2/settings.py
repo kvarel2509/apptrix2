@@ -20,17 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0)+-&4j*2w=xx-jvjvgkkbf1n=4lvuhqm(ry@uulw-uw0al72('
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-0)+-&4j*2w=xx-jvjvgkkbf1n=4lvuhqm(ry@uulw-uw0al72(')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'debug_toolbar',
     'sz',
     'rest_framework',
     'django_filters',
@@ -144,12 +143,6 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     )
 }
-
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
