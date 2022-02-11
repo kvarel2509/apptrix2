@@ -7,7 +7,6 @@ class ClientSerializer(serializers.ModelSerializer):
     latitude = serializers.DecimalField(max_value=90, min_value=-90, max_digits=8, decimal_places=6)
     longitude = serializers.DecimalField(max_value=180, min_value=-180, max_digits=9, decimal_places=6)
     password = serializers.CharField(write_only=True)
-    avatar = serializers.ImageField(write_only=True, required=False)
 
     class Meta:
         model = User
