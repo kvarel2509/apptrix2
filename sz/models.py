@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, first_name, gender, latitude, longitude, password=None, **kwargs):
-        if not email or not first_name or not gender or not password:
-            raise ValueError('Email, first name, gender and password is required fields')
+        if not email or not first_name or not gender or not password or not latitude or not longitude:
+            raise ValueError('Email, first name, gender, latitude, longitude and password is required fields')
         user = self.model(email=self.normalize_email(email),
                           first_name=first_name,
                           gender=gender,
@@ -19,6 +19,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, email, first_name, gender, latitude, longitude, password=None):
         user = self.create_user(email, first_name, gender, latitude, longitude, password=password)
         user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 
@@ -31,6 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField('Пол', max_length=30, choices=[('M', 'Man'), ('W', 'Woman')], help_text='M/W')
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     match = models.ManyToManyField('self', symmetrical=False, blank=True)
     latitude = models.DecimalField('Широта', max_digits=8, decimal_places=6)
     longitude = models.DecimalField('Долгота', max_digits=9, decimal_places=6)
