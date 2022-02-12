@@ -3,16 +3,21 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, first_name, gender, password=None, **kwargs):
+    def create_user(self, email, first_name, gender, latitude, longitude, password=None, **kwargs):
         if not email or not first_name or not gender or not password:
             raise ValueError('Email, first name, gender and password is required fields')
-        user = self.model(email=self.normalize_email(email), first_name=first_name, gender=gender, **kwargs)
+        user = self.model(email=self.normalize_email(email),
+                          first_name=first_name,
+                          gender=gender,
+                          latitude=latitude,
+                          longitude=longitude,
+                          **kwargs)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, first_name, gender, password=None):
-        user = self.create_user(email, first_name, gender, password=password)
+    def create_superuser(self, email, first_name, gender, latitude, longitude, password=None):
+        user = self.create_user(email, first_name, gender, latitude, longitude, password=password)
         user.is_superuser = True
         user.save()
         return user
@@ -31,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     longitude = models.DecimalField('Долгота', max_digits=9, decimal_places=6)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'gender']
+    REQUIRED_FIELDS = ['first_name', 'gender', latitude, longitude]
     objects = CustomUserManager()
 
     def __str__(self):
