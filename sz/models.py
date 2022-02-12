@@ -36,7 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     longitude = models.DecimalField('Долгота', max_digits=9, decimal_places=6)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'gender', latitude, longitude]
+    REQUIRED_FIELDS = ['first_name', 'gender', 'latitude', 'longitude']
     objects = CustomUserManager()
 
     def __str__(self):
